@@ -1,0 +1,841 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Template API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api.example.com",
+      "description": "Production server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "authorization": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "InternalErrorResponse": {
+        "description": "internal error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "errorCode": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "errorCode": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorCode": {
+        "type": "integer",
+        "enum": [
+          "{badParametersInput:  -10}",
+          "{errorDBRequest: -20}",
+          "{functionalError: -30}",
+          "{errorAuth: -40}"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Client"
+    }
+  ],
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "token": {
+                              "type": "string"
+                            },
+                            "uuid": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "obtener informacion del usuario logueado",
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Se Obtuvieron los datos del usuario logueado con exito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "uuid": {
+                              "type": "string"
+                            },
+                            "userName": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "lastLogin": {
+                              "type": "string",
+                              "format": "date-time",
+                              "nullable": true
+                            }
+                          }
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/auth/refresh": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "obtener informacion del usuario logueado",
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Se Obtuvieron los datos del usuario logueado con exito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "uuid": {
+                              "type": "string"
+                            },
+                            "userName": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "lastLogin": {
+                              "type": "string",
+                              "format": "date-time",
+                              "nullable": true
+                            }
+                          }
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Registrar usuario nuevo en la aplicacion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "userName": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User registered successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "uuid": {
+                              "type": "string"
+                            },
+                            "userName": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "lastLogin": {
+                              "type": "string",
+                              "format": "date-time",
+                              "nullable": true
+                            }
+                          }
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/client": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Get Client",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "example": 5
+            },
+            "description": "Number of clients per page"
+          }
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Client successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "clients": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "firstName": {
+                                "type": "string"
+                              },
+                              "lastName": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              },
+                              "birthDay": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "state": {
+                                "type": "string"
+                              },
+                              "stateUpdatedAt": {
+                                "type": "string"
+                              },
+                              "isDeleted": {
+                                "type": "boolean"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Client"],
+        "summary": "Create a new client",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "juans" },
+                  "firstName": { "type": "string", "example": "carrasco" },
+                  "lastName": { "type": "string", "example": "De la roca" },
+                  "email": { "type": "string", "example": "juan1s@gmail.com" },
+                  "state": { "type": "string", "example": "ACTIVO" },
+                  "birthDay": { "type": "string", "format": "date-time", "example": "2000-01-10T00:00:00.000Z" }
+                },
+                "required": ["name", "firstName", "lastName", "email", "state", "birthDay"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Consulta exitosa" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "client": {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string", "example": "juans" },
+                            "firstName": { "type": "string", "example": "carrasco" },
+                            "lastName": { "type": "string", "example": "De la roca" },
+                            "email": { "type": "string", "example": "juan1s@gmail.com" },
+                            "state": { "type": "string", "example": "ACTIVO" },
+                            "birthDay": { "type": "string", "format": "date-time", "example": "2000-01-10T00:00:00.000Z" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Client"],
+        "summary": "Update a specific client by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the client to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "juan ddd" },
+                  "firstName": { "type": "string", "example": "carrasco 22" },
+                  "lastName": { "type": "string", "example": "De la roca" },
+                  "email": { "type": "string", "example": "juan1@gmail.com" },
+                  "birthDay": { "type": "string", "format": "date", "example": "2000-01-10" }
+                },
+                "required": ["name", "firstName", "lastName", "email", "birthDay"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Consulta exitosa" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "client": {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string", "example": "juan ddd" },
+                            "firstName": { "type": "string", "example": "carrasco 22" },
+                            "lastName": { "type": "string", "example": "De la roca" },
+                            "email": { "type": "string", "example": "juan1@gmail.com" },
+                            "birthDay": { "type": "string", "format": "date-time", "example": "2000-01-10T00:00:00.000Z" },
+                            "stateUpdatedAt": { "type": "string", "format": "date-time", "example": "2024-07-23T19:58:02.927Z" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Client"
+        ],
+      "summary": "Delete Client",
+      "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the client to delete"
+          }
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete Client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/client/{id}": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Get a specific client by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the client to retrieve"
+          }
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Client successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Consulta exitosa"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "client": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 64
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "juan"
+                            },
+                            "firstName": {
+                              "type": "string",
+                              "example": "carrasco 22"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "De la roca"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "juan1@gmail.com"
+                            },
+                            "birthDay": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2000-01-10T00:00:00.000Z"
+                            },
+                            "state": {
+                              "type": "string",
+                              "example": "INACTIVO"
+                            },
+                            "stateUpdatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-07-22T17:27:26.740Z"
+                            },
+                            "isDeleted": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-07-22T00:08:04.926Z"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-07-22T00:08:04.926Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/client/change-state": {
+      "put": {
+        "tags": ["Client"],
+        "summary": "Change the state of a client",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer", "example": 64 },
+                  "state": { "type": "string", "example": "ACTIVO" }
+                },
+                "required": ["id", "state"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "State changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Registro actualizado correctamente" },
+                    "data": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalErrorResponse"
+          }
+        }
+      }
+    }
+  }
+}

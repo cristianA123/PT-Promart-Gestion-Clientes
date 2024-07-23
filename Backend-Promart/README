@@ -1,0 +1,19 @@
+## Commands
+
+
+##### `git clone ...`
+> Clonar Proyecto
+
+##### `npm install or  yarn install`
+> Installs package dependencies
+
+##### `cp .env.example .env`
+> Definir variables de entorno
+
+##### `npm run migrations:seed`
+> Ejecutar Migraciones 
+
+##### `npm run dev`
+> Levantar el proyecto
+
+
